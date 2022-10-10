@@ -13,6 +13,7 @@
 		D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602E228F4752D00A92564 /* Preview Assets.xcassets */; };
 		D0A602E528F4752D00A92564 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602E428F4752D00A92564 /* Persistence.swift */; };
 		D0A602E828F4752D00A92564 /* Koinos_Node.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0A602E628F4752D00A92564 /* Koinos_Node.xcdatamodeld */; };
+		D0A602F028F4758600A92564 /* koinos-init.sh in Resources */ = {isa = PBXBuildFile; fileRef = D0A602EF28F4758600A92564 /* koinos-init.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D0A602E428F4752D00A92564 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		D0A602E728F4752D00A92564 /* Koinos_Node.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Koinos_Node.xcdatamodel; sourceTree = "<group>"; };
 		D0A602E928F4752D00A92564 /* Koinos_Node.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Koinos_Node.entitlements; sourceTree = "<group>"; };
+		D0A602EF28F4758600A92564 /* koinos-init.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "koinos-init.sh"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 		D0A602CF28F4752C00A92564 = {
 			isa = PBXGroup;
 			children = (
+				D0A602EF28F4758600A92564 /* koinos-init.sh */,
 				D0A602DA28F4752C00A92564 /* Koinos Node */,
 				D0A602D928F4752C00A92564 /* Products */,
 			);
@@ -134,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */,
+				D0A602F028F4758600A92564 /* koinos-init.sh in Resources */,
 				D0A602E028F4752D00A92564 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
