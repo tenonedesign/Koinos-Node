@@ -7,14 +7,30 @@
 
 import SwiftUI
 
+let dataModel = KoinosDataModel.init()
+
 @main
 struct Koinos_NodeApp: App {
-    let persistenceController = PersistenceController.shared
-
+    
+    init() {
+        if (!dataModel.dataDirectoryExists()) {
+            print("Initializing and downloading Koinos")
+            dataModel.initNode()
+            dataModel.reloadKoinos()
+        }
+        dataModel.updateDockerRunStatus()
+        dataModel.updateGitInstallStatus()
+        dataModel.updatePublicKey()
+    }
+    
+    @NSApplicationDelegateAdaptor(KoinosAppDelegate.self) private var appDelegate
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            ContentView(dm: dataModel).frame(width: 340, height: 320)
+        }
+        Settings {
+            SettingsView(dm: dataModel)
         }
     }
 }

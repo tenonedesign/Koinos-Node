@@ -9,11 +9,18 @@
 /* Begin PBXBuildFile section */
 		D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */; };
 		D0A602DE28F4752C00A92564 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DD28F4752C00A92564 /* ContentView.swift */; };
-		D0A602E028F4752D00A92564 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602DF28F4752D00A92564 /* Assets.xcassets */; };
 		D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602E228F4752D00A92564 /* Preview Assets.xcassets */; };
-		D0A602E528F4752D00A92564 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602E428F4752D00A92564 /* Persistence.swift */; };
-		D0A602E828F4752D00A92564 /* Koinos_Node.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0A602E628F4752D00A92564 /* Koinos_Node.xcdatamodeld */; };
-		D0A602F028F4758600A92564 /* koinos-init.sh in Resources */ = {isa = PBXBuildFile; fileRef = D0A602EF28F4758600A92564 /* koinos-init.sh */; };
+		D0A602F028F4758600A92564 /* koinos-reset.sh in Resources */ = {isa = PBXBuildFile; fileRef = D0A602EF28F4758600A92564 /* koinos-reset.sh */; };
+		D0A602F428F4F4AB00A92564 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602F328F4F4AB00A92564 /* AppDelegate.swift */; };
+		D0A602F628F4F69100A92564 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602F528F4F69100A92564 /* DataModel.swift */; };
+		D0A602F828F5CA4300A92564 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602F728F5CA4300A92564 /* Settings.swift */; };
+		D0A602FB28F5DBF700A92564 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = D0A602FA28F5DBF700A92564 /* AlertToast */; };
+		D0A602FC28F608C800A92564 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602DF28F4752D00A92564 /* Assets.xcassets */; };
+		D0D63E0028F720B6003515FC /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63DFF28F720B6003515FC /* secp256k1 */; };
+		D0D63E0328F72184003515FC /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63E0228F72184003515FC /* BigInt */; };
+		D0D63E0628F7226B003515FC /* Base58Swift in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63E0528F7226B003515FC /* Base58Swift */; };
+		D0DEA41C28F637F100F17568 /* koinos-reload.sh in Resources */ = {isa = PBXBuildFile; fileRef = D0DEA41B28F637F100F17568 /* koinos-reload.sh */; };
+		D0DEA41F28F668FD00F17568 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = D0DEA41E28F668FD00F17568 /* Zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +29,12 @@
 		D0A602DD28F4752C00A92564 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0A602DF28F4752D00A92564 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0A602E228F4752D00A92564 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D0A602E428F4752D00A92564 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		D0A602E728F4752D00A92564 /* Koinos_Node.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Koinos_Node.xcdatamodel; sourceTree = "<group>"; };
 		D0A602E928F4752D00A92564 /* Koinos_Node.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Koinos_Node.entitlements; sourceTree = "<group>"; };
-		D0A602EF28F4758600A92564 /* koinos-init.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "koinos-init.sh"; sourceTree = "<group>"; };
+		D0A602EF28F4758600A92564 /* koinos-reset.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "koinos-reset.sh"; sourceTree = "<group>"; };
+		D0A602F328F4F4AB00A92564 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D0A602F528F4F69100A92564 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		D0A602F728F5CA4300A92564 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		D0DEA41B28F637F100F17568 /* koinos-reload.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "koinos-reload.sh"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +42,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0DEA41F28F668FD00F17568 /* Zip in Frameworks */,
+				D0D63E0628F7226B003515FC /* Base58Swift in Frameworks */,
+				D0D63E0028F720B6003515FC /* secp256k1 in Frameworks */,
+				D0A602FB28F5DBF700A92564 /* AlertToast in Frameworks */,
+				D0D63E0328F72184003515FC /* BigInt in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,7 +56,6 @@
 		D0A602CF28F4752C00A92564 = {
 			isa = PBXGroup;
 			children = (
-				D0A602EF28F4758600A92564 /* koinos-init.sh */,
 				D0A602DA28F4752C00A92564 /* Koinos Node */,
 				D0A602D928F4752C00A92564 /* Products */,
 			);
@@ -59,12 +72,15 @@
 		D0A602DA28F4752C00A92564 /* Koinos Node */ = {
 			isa = PBXGroup;
 			children = (
+				D0A602EF28F4758600A92564 /* koinos-reset.sh */,
+				D0DEA41B28F637F100F17568 /* koinos-reload.sh */,
 				D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */,
+				D0A602F328F4F4AB00A92564 /* AppDelegate.swift */,
+				D0A602F528F4F69100A92564 /* DataModel.swift */,
 				D0A602DD28F4752C00A92564 /* ContentView.swift */,
+				D0A602F728F5CA4300A92564 /* Settings.swift */,
 				D0A602DF28F4752D00A92564 /* Assets.xcassets */,
-				D0A602E428F4752D00A92564 /* Persistence.swift */,
 				D0A602E928F4752D00A92564 /* Koinos_Node.entitlements */,
-				D0A602E628F4752D00A92564 /* Koinos_Node.xcdatamodeld */,
 				D0A602E128F4752D00A92564 /* Preview Content */,
 			);
 			path = "Koinos Node";
@@ -94,6 +110,13 @@
 			dependencies = (
 			);
 			name = "Koinos Node";
+			packageProductDependencies = (
+				D0A602FA28F5DBF700A92564 /* AlertToast */,
+				D0DEA41E28F668FD00F17568 /* Zip */,
+				D0D63DFF28F720B6003515FC /* secp256k1 */,
+				D0D63E0228F72184003515FC /* BigInt */,
+				D0D63E0528F7226B003515FC /* Base58Swift */,
+			);
 			productName = "Koinos Node";
 			productReference = D0A602D828F4752C00A92564 /* Koinos Node.app */;
 			productType = "com.apple.product-type.application";
@@ -122,6 +145,13 @@
 				Base,
 			);
 			mainGroup = D0A602CF28F4752C00A92564;
+			packageReferences = (
+				D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				D0DEA41D28F668FD00F17568 /* XCRemoteSwiftPackageReference "Zip" */,
+				D0D63DFE28F720B6003515FC /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
+				D0D63E0128F72184003515FC /* XCRemoteSwiftPackageReference "BigInt" */,
+				D0D63E0428F7226B003515FC /* XCRemoteSwiftPackageReference "Base58Swift" */,
+			);
 			productRefGroup = D0A602D928F4752C00A92564 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,8 +167,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */,
-				D0A602F028F4758600A92564 /* koinos-init.sh in Resources */,
-				D0A602E028F4752D00A92564 /* Assets.xcassets in Resources */,
+				D0A602FC28F608C800A92564 /* Assets.xcassets in Resources */,
+				D0A602F028F4758600A92564 /* koinos-reset.sh in Resources */,
+				D0DEA41C28F637F100F17568 /* koinos-reload.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,10 +180,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0A602E828F4752D00A92564 /* Koinos_Node.xcdatamodeld in Sources */,
-				D0A602E528F4752D00A92564 /* Persistence.swift in Sources */,
 				D0A602DE28F4752C00A92564 /* ContentView.swift in Sources */,
+				D0A602F428F4F4AB00A92564 /* AppDelegate.swift in Sources */,
+				D0A602F828F5CA4300A92564 /* Settings.swift in Sources */,
 				D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */,
+				D0A602F628F4F69100A92564 /* DataModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -291,6 +324,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tenonedesign.Koinos-Node";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -304,6 +338,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -318,6 +353,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tenonedesign.Koinos-Node";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -349,18 +385,76 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCVersionGroup section */
-		D0A602E628F4752D00A92564 /* Koinos_Node.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				D0A602E728F4752D00A92564 /* Koinos_Node.xcdatamodel */,
-			);
-			currentVersion = D0A602E728F4752D00A92564 /* Koinos_Node.xcdatamodel */;
-			path = Koinos_Node.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+/* Begin XCRemoteSwiftPackageReference section */
+		D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
 		};
-/* End XCVersionGroup section */
+		D0D63DFE28F720B6003515FC /* XCRemoteSwiftPackageReference "secp256k1.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Boilertalk/secp256k1.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.7;
+			};
+		};
+		D0D63E0128F72184003515FC /* XCRemoteSwiftPackageReference "BigInt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/attaswift/BigInt.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		D0D63E0428F7226B003515FC /* XCRemoteSwiftPackageReference "Base58Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/keefertaylor/Base58Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		D0DEA41D28F668FD00F17568 /* XCRemoteSwiftPackageReference "Zip" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/Zip.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D0A602FA28F5DBF700A92564 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
+		D0D63DFF28F720B6003515FC /* secp256k1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0D63DFE28F720B6003515FC /* XCRemoteSwiftPackageReference "secp256k1.swift" */;
+			productName = secp256k1;
+		};
+		D0D63E0228F72184003515FC /* BigInt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0D63E0128F72184003515FC /* XCRemoteSwiftPackageReference "BigInt" */;
+			productName = BigInt;
+		};
+		D0D63E0528F7226B003515FC /* Base58Swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0D63E0428F7226B003515FC /* XCRemoteSwiftPackageReference "Base58Swift" */;
+			productName = Base58Swift;
+		};
+		D0DEA41E28F668FD00F17568 /* Zip */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0DEA41D28F668FD00F17568 /* XCRemoteSwiftPackageReference "Zip" */;
+			productName = Zip;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D0A602D028F4752C00A92564 /* Project object */;
 }
