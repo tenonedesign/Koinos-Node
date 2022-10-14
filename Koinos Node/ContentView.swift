@@ -26,6 +26,8 @@ struct ContentView: View {
                     .font(.subheadline).foregroundColor(Color.accentColor)
                 Text("Network block height: \( dm.networkBlockHeight > 0 ? String(dm.networkBlockHeight) : "-" )")
                     .font(.subheadline).foregroundColor(Color.accentColor)
+                Text("Koin: \( dm.producerKoin > 0 ? String(String(dm.producerKoin).dropLast(8)) : "-" ), VHP: \( dm.producerVHP > 0 ? String(String(dm.producerVHP).dropLast(8)) : "-")")
+                    .font(.subheadline).foregroundColor(Color.accentColor)
                 VStack {
                     Button(action: {dm.startNode()}) {
                         Text("Start node\( dm.nodeRunning ? " (running)" : "" )").frame(minWidth: 160)
@@ -43,10 +45,6 @@ struct ContentView: View {
                           Button(action: { dm.openPreferences() }) {
                               Text("Open preferences...")
                           }
-                          Button(action: {dm.reloadKoinos()}) {
-                              Text("Reload from preferences").frame(minWidth: 160)
-                          }.disabled(dm.genericRunning || dm.nodeRunning)
-                          
                           Button(action: {showAlert = true}) {
                               Text("Full data reset...").frame(minWidth: 160)
                           }.disabled(dm.genericRunning || dm.nodeRunning)
@@ -67,9 +65,14 @@ struct ContentView: View {
                 .toast(isPresenting: $dm.showAlert){
                     dm.alertToast
                 }
-                .toast(isPresenting: $dm.showSpinner, duration: 0){
-                    dm.spinnerToast
+                .toast(isPresenting: $dm.showProgressToast) {
+                    AlertToast(displayMode: .banner(.pop), type: .loading, title: "\(dm.progressText) (\(Int(floor(dm.progress.fractionCompleted * 100)))%)", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
                 }
+                // too aggressive - shows on startup
+                // could show only when node is running, but can’t combine dm.nodeRequiresReload with dm.nodeRunning here
+//                .toast(isPresenting: $dm.nodeRequiresReload, duration: 0){
+//                    AlertToast(displayMode: .banner(.pop), type: .regular, title: "Restart to apply changes", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
+//                }
             
                 .alert(isPresented: $showAlert) {
                     Alert(
@@ -90,6 +93,13 @@ struct ContentView: View {
                     }
                     KoinosDataModel.getBlockHeights(host: dm.externalApiEndpoint) { (height: Int?, error: Error?) in
                         dm.networkBlockHeight = height ?? 0
+                    }
+                    
+                    dataModel.getBalance(contractId: "1JZqj7dDrK5LzvdJgufYBJNUFo88xBoWC8", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
+                        dm.producerVHP = balance ?? 0
+                    }
+                    dataModel.getBalance(contractId: "19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
+                        dm.producerKoin = balance ?? 0
                     }
                     dataModel.updateDockerRunStatus()
                     dataModel.updateGitInstallStatus()

@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import AlertToast
 
 
 struct SettingsView: View {
@@ -41,7 +42,14 @@ struct NodeSettingsView: View {
                    TextField("External API endpoint", text: $dm.externalApiEndpoint)
                }
            }
-           Text("Use the 'Reload from preferences' menu item after any changes").padding(.top, 24)
+           if dm.nodeRunning && dm.nodeRequiresReload {
+               VStack(alignment: .center) {
+                   Text("Note: restart node to apply changes").font(.headline).padding(.leading, 24).padding(.trailing, 24).padding(.top, 6).padding(.bottom, 6).overlay(
+                       Capsule(style: .continuous)
+                           .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 1))
+                   )
+               }.frame(maxWidth: .infinity).padding(.top, 18)
+           }
        }
    }
 }
@@ -60,9 +68,14 @@ struct MinerSettingsView: View {
                     TextField("Private key for this miner", text: $dm.minerPrivateKey)
                 }
             }
+            if #available(macOS 12, *) {
+                Text("Miner public key: \(dm.minerPublicKey)").textSelection(.enabled).padding(.top, 24)
+            } else {
+                Text("Miner public key: \(dm.minerPublicKey)").padding(.top, 24)
+            }
             Button(action: {showAlert = true}) {
                 Text("Generate new key pair")
-            }.padding(.top, 24)
+            }
                 .alert(isPresented: $showAlert) {
                     Alert(
                         title: Text("Generating new keys will remove the existing key from the miner"),
@@ -73,13 +86,14 @@ struct MinerSettingsView: View {
                         secondaryButton: .cancel()
                     )
                 }
-            
-            if #available(macOS 12, *) {
-                Text("Miner public key: \(dm.minerPublicKey)").textSelection(.enabled)
-            } else {
-                Text("Miner public key: \(dm.minerPublicKey)")
+            if dm.nodeRunning && dm.nodeRequiresReload {
+                VStack(alignment: .center) {
+                    Text("Note: restart node to apply changes").font(.headline).padding(.leading, 24).padding(.trailing, 24).padding(.top, 6).padding(.bottom, 6).overlay(
+                        Capsule(style: .continuous)
+                            .stroke(Color.accentColor, style: StrokeStyle(lineWidth: 1))
+                    )
+                }.frame(maxWidth: .infinity).padding(.top, 18)
             }
-            Text("Use the 'Reload from preferences' menu item after any changes").padding(.top, 12)
         }
     }
 }

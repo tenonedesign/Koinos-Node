@@ -8,11 +8,6 @@ KOINOS_VERSION=${4:-0.4.0}
 KOINOS_DIRECTORY=$HOME_DIR
 KOINOS_DATA_DIRECTORY=$HOME_DIR".koinos"
 
-mkdir "$HOME_DIR"
-
-rm -rf "$KOINOS_DATA_DIRECTORY"
-mkdir "$KOINOS_DATA_DIRECTORY"
-mkdir "$KOINOS_DATA_DIRECTORY/block_producer"
-echo $KOINOS_MINER_PRIVATE_KEY > "$KOINOS_DATA_DIRECTORY/block_producer/private.key"
+rm -rf "$HOME_DIR"
 
 exit

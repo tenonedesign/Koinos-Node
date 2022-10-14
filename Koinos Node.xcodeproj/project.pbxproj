@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0046D2828F9B3A100DCDFFC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0046D2728F9B3A100DCDFFC /* Utils.swift */; };
+		D0046D2B28F9B51F00DCDFFC /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D0046D2A28F9B51F00DCDFFC /* ZIPFoundation */; };
+		D0046D2D28FA06D300DCDFFC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0046D2C28FA06D300DCDFFC /* README.md */; };
 		D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */; };
 		D0A602DE28F4752C00A92564 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DD28F4752C00A92564 /* ContentView.swift */; };
 		D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602E228F4752D00A92564 /* Preview Assets.xcassets */; };
@@ -24,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D0046D2728F9B3A100DCDFFC /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D0046D2C28FA06D300DCDFFC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D0A602D828F4752C00A92564 /* Koinos Node.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Koinos Node.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koinos_NodeApp.swift; sourceTree = "<group>"; };
 		D0A602DD28F4752C00A92564 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,6 +52,7 @@
 				D0D63E0028F720B6003515FC /* secp256k1 in Frameworks */,
 				D0A602FB28F5DBF700A92564 /* AlertToast in Frameworks */,
 				D0D63E0328F72184003515FC /* BigInt in Frameworks */,
+				D0046D2B28F9B51F00DCDFFC /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +62,7 @@
 		D0A602CF28F4752C00A92564 = {
 			isa = PBXGroup;
 			children = (
+				D0046D2C28FA06D300DCDFFC /* README.md */,
 				D0A602DA28F4752C00A92564 /* Koinos Node */,
 				D0A602D928F4752C00A92564 /* Products */,
 			);
@@ -79,6 +86,7 @@
 				D0A602F528F4F69100A92564 /* DataModel.swift */,
 				D0A602DD28F4752C00A92564 /* ContentView.swift */,
 				D0A602F728F5CA4300A92564 /* Settings.swift */,
+				D0046D2728F9B3A100DCDFFC /* Utils.swift */,
 				D0A602DF28F4752D00A92564 /* Assets.xcassets */,
 				D0A602E928F4752D00A92564 /* Koinos_Node.entitlements */,
 				D0A602E128F4752D00A92564 /* Preview Content */,
@@ -116,6 +124,7 @@
 				D0D63DFF28F720B6003515FC /* secp256k1 */,
 				D0D63E0228F72184003515FC /* BigInt */,
 				D0D63E0528F7226B003515FC /* Base58Swift */,
+				D0046D2A28F9B51F00DCDFFC /* ZIPFoundation */,
 			);
 			productName = "Koinos Node";
 			productReference = D0A602D828F4752C00A92564 /* Koinos Node.app */;
@@ -151,6 +160,7 @@
 				D0D63DFE28F720B6003515FC /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
 				D0D63E0128F72184003515FC /* XCRemoteSwiftPackageReference "BigInt" */,
 				D0D63E0428F7226B003515FC /* XCRemoteSwiftPackageReference "Base58Swift" */,
+				D0046D2928F9B51F00DCDFFC /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = D0A602D928F4752C00A92564 /* Products */;
 			projectDirPath = "";
@@ -168,6 +178,7 @@
 			files = (
 				D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */,
 				D0A602FC28F608C800A92564 /* Assets.xcassets in Resources */,
+				D0046D2D28FA06D300DCDFFC /* README.md in Resources */,
 				D0A602F028F4758600A92564 /* koinos-reset.sh in Resources */,
 				D0DEA41C28F637F100F17568 /* koinos-reload.sh in Resources */,
 			);
@@ -185,6 +196,7 @@
 				D0A602F828F5CA4300A92564 /* Settings.swift in Sources */,
 				D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */,
 				D0A602F628F4F69100A92564 /* DataModel.swift in Sources */,
+				D0046D2828F9B3A100DCDFFC /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,7 +325,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Koinos Node/Preview Content\"";
 				DEVELOPMENT_TEAM = 8FEZZEFZ96;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -325,7 +337,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tenonedesign.Koinos-Node";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -342,7 +354,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"Koinos Node/Preview Content\"";
 				DEVELOPMENT_TEAM = 8FEZZEFZ96;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -354,7 +366,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tenonedesign.Koinos-Node";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -386,6 +398,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D0046D2928F9B51F00DCDFFC /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.9;
+			};
+		};
 		D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast.git";
@@ -429,6 +449,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D0046D2A28F9B51F00DCDFFC /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D0046D2928F9B51F00DCDFFC /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
 		D0A602FA28F5DBF700A92564 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */;

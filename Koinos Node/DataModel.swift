@@ -8,74 +8,35 @@
 import Foundation
 import AlertToast
 import SwiftUI
-import Zip
 import secp256k1
 import BigInt
 import Base58Swift
-
-// for generic throwable errors e.g. throw "some error description"
-// https://stackoverflow.com/a/40629365
-extension String: Error {}
-extension String: LocalizedError {
-    public var errorDescription: String? { return self }
-}
-extension Data {
-    public var toHexString: String {
-        return self.map{ String(format: "%02x", $0) }.joined()
-    }
-    public func base64urlEncodedString(options: Data.Base64EncodingOptions = []) -> String {
-        var result = self.base64EncodedString(options: options)
-        result = result.replacingOccurrences(of: "+", with: "-")
-        result = result.replacingOccurrences(of: "/", with: "_")
-        result = result.replacingOccurrences(of: "=", with: "")
-        return result
-    }
-}
-// only to support color conversion before macOS 12
-extension NSColor {
-    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        return (red, green, blue, alpha)
-    }
-}
-extension Color {
-    init(compatNsColor: NSColor) {
-        let color = compatNsColor.usingColorSpace(NSColorSpace.deviceRGB) ?? NSColor.black
-        self.init(red: Double(color.rgba.red),
-                  green: Double(color.rgba.green),
-                  blue: Double(color.rgba.blue),
-                  opacity: Double(color.rgba.alpha))
-    }
-}
+import ZIPFoundation
 
 class KoinosDataModel: ObservableObject {
     
-    @AppStorage("version") var version = "0.4.0"
-    @AppStorage("minerPrivateKey") var minerPrivateKey = "" {
-        didSet{
-            updatePublicKey()
-        }
-    }
-    @AppStorage("minerPublicKey") var minerPublicKey = ""
-    @AppStorage("producerAddress") var producerAddress = ""
+    @AppStorage("version") var version = "0.4.1" { didSet { nodeRequiresReload = true } }
+    @AppStorage("minerPrivateKey") var minerPrivateKey = "" { didSet{ nodeRequiresReload = true; updatePublicKey() } }
+    @AppStorage("minerPublicKey") var minerPublicKey = "" { didSet { nodeRequiresReload = true } }
+    @AppStorage("producerAddress") var producerAddress = "" { didSet { nodeRequiresReload = true } }
     @AppStorage("externalApiEndpoint") var externalApiEndpoint = "https://api.koinosblocks.com"
     
     @Published var genericRunning = false
     @Published var nodeRunning = false
+    @Published var nodeRequiresReload = false
     @Published var nodeBlockHeight = 0
     @Published var networkBlockHeight = 0
+    @Published var producerKoin = 0
+    @Published var producerVHP = 0
     @Published var dockerIsRunning = true
     @Published var gitIsInstalled = true {
         willSet{
             if newValue == true && gitIsInstalled == false {
-                reloadKoinos()  // this can’t have been done without git, so need to do it now
+                nodeRequiresReload = true  // this can’t have been done without git, so need to do it now
             }
         }
     }
+    let serialQueue = DispatchQueue(label: "processSerialQueue")
     var applicationCanTerminate = true
     var applicationTerminationTimeout = 30
     var containerDirectory = "\(FileManager.default.urls(for:.applicationSupportDirectory, in:.userDomainMask).first?.path ?? "")/Koinos Node/"
@@ -86,20 +47,23 @@ class KoinosDataModel: ObservableObject {
             showAlert = false
         }
     }
-    @Published var showSpinner = false
-    @Published var spinnerToast = AlertToast(displayMode: .banner(.pop), type: .loading, title: "", subTitle: nil, style: nil)
+    var progress = Progress()
+    var progressText = ""
+    @Published var showProgressToast = false
+    @Published var reloadToast = AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Restart node to apply changes", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
     
-    func successAlert(text: String) {
+    func showSuccessAlert(text: String) {
         self.alertToast = AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: text, subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
         self.showAlert = true
     }
-    func failureAlert(text: String) {
+    func showFailureAlert(text: String) {
         self.alertToast = AlertToast(displayMode: .banner(.pop), type: .error(.red), title: text, subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
         self.showAlert = true
     }
-    func loadingSpinner(text: String) {
-        self.spinnerToast = AlertToast(displayMode: .banner(.pop), type: .loading, title: text, subTitle: nil)
-        self.showSpinner = true
+    func shouldShowProgress(_ should: Bool, text: String = "") {
+        progress = Progress()
+        progressText = text
+        showProgressToast = should
     }
     func validateAddress(_ address: String) -> Bool {
         return (address.count == 34)
@@ -112,15 +76,24 @@ class KoinosDataModel: ObservableObject {
     }
     
     func runProcess(scriptContent: String, terminationHandler: ((Process) -> Void)?) {
-        let process = Process()
-        process.environment = ["PATH":"/usr/local/:/usr/local/bin/:usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"]
-        process.executableURL = URL(fileURLWithPath: "/bin/bash")
-        process.arguments = ["-c", scriptContent]
-        process.terminationHandler = terminationHandler
-        do {
-            try process.run()
-        } catch let error {
-            print("error running script: \(error), script: \(scriptContent)")
+        serialQueue.async {
+            // run synchronously in this queue
+            let semaphore = DispatchSemaphore(value: 0)
+            let process = Process()
+            process.environment = ["PATH":"/usr/local/:/usr/local/bin/:usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"]
+            process.executableURL = URL(fileURLWithPath: "/bin/bash")
+            process.arguments = ["-c", scriptContent]
+            process.terminationHandler = { process in
+                semaphore.signal()
+                guard let terminationHandler = terminationHandler else { return }
+                terminationHandler(process)
+            }
+            do {
+                try process.run()
+            } catch let error {
+                print("error running script: \(error), script: \(scriptContent)")
+            }
+            _ = semaphore.wait(timeout: .now() + 3)
         }
     }
     func initNode() {
@@ -131,7 +104,7 @@ class KoinosDataModel: ObservableObject {
         runProcess(scriptContent: scriptContent, terminationHandler: { _ in
             DispatchQueue.main.async {
                 self.genericRunning = false
-                self.successAlert(text: "Reset complete")
+                self.showSuccessAlert(text: "Reset complete")
             }
             self.applicationCanTerminate = true
         })
@@ -144,12 +117,16 @@ class KoinosDataModel: ObservableObject {
         runProcess(scriptContent: scriptContent, terminationHandler: { _ in
             DispatchQueue.main.async {
                 self.genericRunning = false
-                if alert { self.successAlert(text: "Reload complete") }
+                if alert { self.showSuccessAlert(text: "Reload complete") }
             }
             self.applicationCanTerminate = true
         })
     }
     func startNode() {
+        if (nodeRequiresReload) {
+            nodeRequiresReload = false
+            reloadKoinos(alert: false)
+        }
         nodeRunning = true
         let scriptContent = "cd '\(containerDirectory)koinos'; docker compose --profile all up"
         runProcess(scriptContent: scriptContent, terminationHandler: { _ in
@@ -166,7 +143,7 @@ class KoinosDataModel: ObservableObject {
             DispatchQueue.main.async {
                 self.genericRunning = false;
                 self.nodeRunning = false
-                self.successAlert(text: "Node stopped")
+                self.showSuccessAlert(text: "Node stopped")
             }
             self.applicationCanTerminate = true
         })
@@ -216,7 +193,8 @@ class KoinosDataModel: ObservableObject {
           if response == NSApplication.ModalResponse.OK, let fileUrl = panel.url {
 //              print(fileUrl)
               panel.orderOut(nil)
-              self.loadingSpinner(text: "Creating backup")
+              self.showProgressToast = true
+              self.shouldShowProgress(true, text: "Creating backup")
               DispatchQueue.global(qos: .background).async {
                   self.saveBackupToUrl(url: fileUrl)
               }
@@ -235,26 +213,22 @@ class KoinosDataModel: ObservableObject {
             print("error deleting public key: \(error)")
         }
 
+        _ = try? fm.removeItem(at: url)
         do {
-            try Zip.zipFiles(paths: [koinosDataUrl], zipFilePath: url, password: nil, progress: { (progress) -> () in
-//                print(progress)
-                DispatchQueue.main.async {
-                    self.loadingSpinner(text: "Creating backup (\(Int(floor(progress * 100)))%)")
-                }
-            })
+            try fm.zipItem(at: koinosDataUrl, to: url, progress: progress)
         }
         catch let error {
             print("error writing zip to file: \(error)")
             DispatchQueue.main.async {
-                self.showSpinner = false
-                self.failureAlert(text: "Backup failed")
+                self.shouldShowProgress(false)
+                self.showFailureAlert(text: "Backup failed")
                 self.reloadKoinos(alert: false) // put private key back
             }
             return
         }
         DispatchQueue.main.async {
-            self.showSpinner = false
-            self.successAlert(text: "Backup complete")
+            self.shouldShowProgress(false)
+            self.showSuccessAlert(text: "Backup complete")
             self.reloadKoinos(alert: false) // put private key back
         }
     }
@@ -266,28 +240,24 @@ class KoinosDataModel: ObservableObject {
           if response == NSApplication.ModalResponse.OK, let fileUrl = panel.url {
               print(fileUrl)
               panel.orderOut(nil)
-              
-              self.loadingSpinner(text: "Restoring from backup")
+              self.shouldShowProgress(true, text: "Restoring from backup")
               DispatchQueue.global(qos: .background).async {
                   do {
-                      try Zip.unzipFile(fileUrl, destination: URL(fileURLWithPath: self.containerDirectory), overwrite: true, password: nil, progress: { (progress) -> () in
-//                          print(progress)
-                          DispatchQueue.main.async {
-                              self.loadingSpinner(text: "Restoring from backup (\(Int(floor(progress * 100)))%)")
-                          }
-                      })
+                      let fm = FileManager.default
+                      _ = try? fm.removeItem(at: URL(fileURLWithPath: "\(self.containerDirectory).koinos"))
+                      try fm.unzipItem(at: fileUrl, to: URL(fileURLWithPath: self.containerDirectory), progress: self.progress)
                   }
                   catch let error {
                       print("error reading from zip file: \(error)")
                       DispatchQueue.main.async {
-                          self.showSpinner = false
-                          self.failureAlert(text: "Restore failed")
+                          self.shouldShowProgress(false)
+                          self.showFailureAlert(text: "Restore failed")
                       }
                       return
                   }
                   DispatchQueue.main.async {
-                      self.showSpinner = false
-                      self.successAlert(text: "Restore complete")
+                      self.shouldShowProgress(false)
+                      self.showSuccessAlert(text: "Restore complete")
                       self.reloadKoinos(alert: false) // put private key back
                   }
               }
@@ -367,14 +337,14 @@ class KoinosDataModel: ObservableObject {
         }
         return Dictionary()
     }
-    static func koinosCall(host: String, method: String, params: String?, callback: @escaping (Data?, Error?) -> Void) {
+    static func koinosCall(host: String, method: String, params: Any?, callback: @escaping (Data?, Error?) -> Void) {
         let object = [
             "id": 1,
             "jsonrpc": "2.0",
             "method": method,
             "params":  params ?? [String: String]()
             ] as [String : Any]
-        
+//        print(object)
         self.request(host: host, method: "POST", path: "", queryString: "", jsonRequest: jsonEncode(object), authToken: "") { (reply: Data?, error: Error?) in
             callback(reply, error)
         }
@@ -391,6 +361,55 @@ class KoinosDataModel: ObservableObject {
         }
     }
 
+    
+    
+    
+    
+    func decodeVarint(varint: Data) -> UInt64 {
+        var hexString = varint.toHexString
+//        print(hexString)
+        hexString.removeFirst(2)
+//        print(hexString)
+        var binaryString = String(Int(hexString, radix: 16)!, radix: 2) // convert from hex string to binary string
+        while binaryString.count % 8 != 0 { // pad again
+            binaryString = "0".appending(binaryString)
+        }
+//        print(binaryString)
+        var modifiedString = ""
+        for (i, _) in binaryString.enumerated() {
+            if i % 8 == 0 {
+                let startIndex = binaryString.index(binaryString.startIndex, offsetBy: i+1)
+                let endIndex = binaryString.index(binaryString.startIndex, offsetBy: i+7)
+                // switch from big to little endian here
+                modifiedString = binaryString[startIndex...endIndex] + modifiedString
+            }
+        }
+//        print(modifiedString)
+        return UInt64(modifiedString, radix: 2) ?? 0
+    }
+    
+    func getBalance(contractId: String, entryPoint: Int, address: String, callback: @escaping (Int?, Error?) -> Void) {
+        let formattedAddess = Data(Base58.base58Decode(address) ?? []).dropFirst()
+        let prefix = "0a1900".toDataFromHex ?? Data()
+        let messageData = prefix + formattedAddess
+        let message = messageData.base64urlEncodedString()
+        let params = [
+            "contract_id": contractId,
+            "entry_point": entryPoint,
+            "args": message
+            ] as [String : Any]
+        KoinosDataModel.koinosCall(host: externalApiEndpoint, method: "chain.read_contract", params: params) { (reply: Data?, error: Error?) in
+            if (error != nil) { callback(nil, error) }
+            else {
+                let dictionary = KoinosDataModel.dictionaryFromJSON(json: reply!)
+                let result = dictionary["result"] as? [String: String] ?? [String:String]()
+                let balanceBase64 = result["result"] ?? ""
+                let balanceData = Data(base64urlEncoded: balanceBase64) ?? Data()
+                if balanceData.isEmpty { callback(nil, "invalid response"); return }
+                callback(Int(self.decodeVarint(varint: balanceData)), nil)
+            }
+        }
+    }
     
     
     
