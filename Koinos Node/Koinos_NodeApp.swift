@@ -18,7 +18,7 @@ struct Koinos_NodeApp: App {
             dataModel.initNode()
             dataModel.reloadKoinos()
         }
-        dataModel.updateDockerRunStatus()
+        dataModel.updateDockerState()
         dataModel.updateGitInstallStatus()
         dataModel.updatePublicKey()
     }

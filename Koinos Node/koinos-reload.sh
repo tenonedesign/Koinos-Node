@@ -14,8 +14,14 @@ cd "$KOINOS_DIRECTORY"
 rm -rf "$KOINOS_DIRECTORY/koinos"
 git clone https://github.com/koinos/koinos.git
 cd "$KOINOS_DIRECTORY/koinos"
-git checkout "v$KOINOS_VERSION"
-#pwd
+
+if [ "$KOINOS_VERSION" = "latest" ]
+then echo "cloning koinos repo at latest"; git checkout "master";
+else echo "using koinos version $KOINOS_VERSION"; git checkout "v$KOINOS_VERSION"
+fi
+
+# remove existing koinos-related images
+docker rmi $(docker images | grep 'koinos\|rabbitmq')
 
 mkdir "$KOINOS_DATA_DIRECTORY"
 mkdir "$KOINOS_DATA_DIRECTORY/block_producer"

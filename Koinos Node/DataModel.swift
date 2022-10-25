@@ -13,9 +13,17 @@ import BigInt
 import Base58Swift
 import ZIPFoundation
 
+enum DockerStates {
+    case unknown
+    case notInstalled
+    case starting
+    case started
+    case error
+}
+
 class KoinosDataModel: ObservableObject {
     
-    @AppStorage("version") var version = "0.4.1" { didSet { nodeRequiresReload = true } }
+    @AppStorage("version") var version = "latest" { didSet { nodeRequiresReload = true } }
     @AppStorage("minerPrivateKey") var minerPrivateKey = "" { didSet{ nodeRequiresReload = true; updatePublicKey() } }
     @AppStorage("minerPublicKey") var minerPublicKey = "" { didSet { nodeRequiresReload = true } }
     @AppStorage("producerAddress") var producerAddress = "" { didSet { nodeRequiresReload = true } }
@@ -26,9 +34,10 @@ class KoinosDataModel: ObservableObject {
     @Published var nodeRequiresReload = false
     @Published var nodeBlockHeight = 0
     @Published var networkBlockHeight = 0
+    @Published var chainFatalError = false
     @Published var producerKoin = 0
     @Published var producerVHP = 0
-    @Published var dockerIsRunning = true
+    @Published var dockerState: DockerStates = .unknown
     @Published var gitIsInstalled = true {
         willSet{
             if newValue == true && gitIsInstalled == false {
@@ -47,7 +56,7 @@ class KoinosDataModel: ObservableObject {
             showAlert = false
         }
     }
-    var progress = Progress()
+    var progress: Progress? = Progress()
     var progressText = ""
     @Published var showProgressToast = false
     @Published var reloadToast = AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Restart node to apply changes", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
@@ -60,8 +69,8 @@ class KoinosDataModel: ObservableObject {
         self.alertToast = AlertToast(displayMode: .banner(.pop), type: .error(.red), title: text, subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
         self.showAlert = true
     }
-    func shouldShowProgress(_ should: Bool, text: String = "") {
-        progress = Progress()
+    func shouldShowProgress(_ should: Bool, text: String = "", showPercent: Bool = true) {
+        progress = showPercent ? Progress() : nil
         progressText = text
         showProgressToast = should
     }
@@ -75,7 +84,7 @@ class KoinosDataModel: ObservableObject {
         validateAddress(producerAddress) && validatePrivateKey(minerPrivateKey)
     }
     
-    func runProcess(scriptContent: String, terminationHandler: ((Process) -> Void)?) {
+    func runProcess(scriptContent: String, maxQueueBlockDuration: Double = 3, terminationHandler: ((Process) -> Void)?) {
         serialQueue.async {
             // run synchronously in this queue
             let semaphore = DispatchSemaphore(value: 0)
@@ -84,7 +93,7 @@ class KoinosDataModel: ObservableObject {
             process.executableURL = URL(fileURLWithPath: "/bin/bash")
             process.arguments = ["-c", scriptContent]
             process.terminationHandler = { process in
-                semaphore.signal()
+                semaphore.signal()  // next task in queue will run right now before or concurrently with terminationhandler
                 guard let terminationHandler = terminationHandler else { return }
                 terminationHandler(process)
             }
@@ -93,7 +102,7 @@ class KoinosDataModel: ObservableObject {
             } catch let error {
                 print("error running script: \(error), script: \(scriptContent)")
             }
-            _ = semaphore.wait(timeout: .now() + 3)
+            _ = semaphore.wait(timeout: .now() + maxQueueBlockDuration)
         }
     }
     func initNode() {
@@ -112,11 +121,13 @@ class KoinosDataModel: ObservableObject {
     func reloadKoinos(alert: Bool = true) {
         genericRunning = true
         applicationCanTerminate = false
+//        self.shouldShowProgress(true, text: "Updating node...", showPercent: false)
         let scriptPath = Bundle.main.path(forResource: "koinos-reload", ofType: "sh") ?? ""
         let scriptContent = "source '\(scriptPath)' '\(dataModel.containerDirectory)' '\(dataModel.producerAddress)' '\(dataModel.minerPrivateKey)' '\(dataModel.version)'"
-        runProcess(scriptContent: scriptContent, terminationHandler: { _ in
+        runProcess(scriptContent: scriptContent, maxQueueBlockDuration: 30, terminationHandler: { _ in
             DispatchQueue.main.async {
                 self.genericRunning = false
+//                self.shouldShowProgress(false)
                 if alert { self.showSuccessAlert(text: "Reload complete") }
             }
             self.applicationCanTerminate = true
@@ -129,7 +140,7 @@ class KoinosDataModel: ObservableObject {
         }
         nodeRunning = true
         let scriptContent = "cd '\(containerDirectory)koinos'; docker compose --profile all up"
-        runProcess(scriptContent: scriptContent, terminationHandler: { _ in
+        runProcess(scriptContent: scriptContent, maxQueueBlockDuration: 10, terminationHandler: { _ in
             DispatchQueue.main.async {
                 self.nodeRunning = false
             }
@@ -138,11 +149,13 @@ class KoinosDataModel: ObservableObject {
     func stopNode() {
         genericRunning = true
         applicationCanTerminate = false
+        self.shouldShowProgress(true, text: "Stopping node...", showPercent: false)
         let scriptContent = "cd '\(containerDirectory)koinos'; docker compose --profile all down"
         runProcess(scriptContent: scriptContent, terminationHandler: { _ in
             DispatchQueue.main.async {
                 self.genericRunning = false;
                 self.nodeRunning = false
+                self.shouldShowProgress(false)
                 self.showSuccessAlert(text: "Node stopped")
             }
             self.applicationCanTerminate = true
@@ -155,12 +168,43 @@ class KoinosDataModel: ObservableObject {
             NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
         }
     }
-    func updateDockerRunStatus() {
-        let scriptContent = "docker info > /dev/null 2>&1"
+    func openLog(path: String) {
+        let scriptContent = "open '\(dataModel.containerDirectory).koinos/\(path)'"
+        print(scriptContent)
+        runProcess(scriptContent: scriptContent, terminationHandler: { _ in
+        })
+    }
+    func updateDockerState() {
+//        print("updateDockerState with current state = \(dockerState)")
+        guard dockerState != .error else { return }
+        let scriptContent = "docker info > /dev/null 2>&1"  // is docker running now?
         runProcess(scriptContent: scriptContent, terminationHandler: { process in
-            DispatchQueue.main.async {
-                self.dockerIsRunning = process.terminationStatus == 0
+            if (process.terminationStatus == 0) {
+                DispatchQueue.main.async { self.dockerState = .started }
+                return
             }
+            if (self.dockerState == .started) { // was started, but user shut down or it crashed
+                DispatchQueue.main.async { self.dockerState = .error }
+                return
+            }
+            let scriptContent = "docker > /dev/null 2>&1"   // is docker installed
+            self.runProcess(scriptContent: scriptContent, terminationHandler: { process in
+                if (process.terminationStatus != 0) {
+                    DispatchQueue.main.async { self.dockerState = .notInstalled }
+                    return
+                }
+                // start docker if not starting
+                if (self.dockerState != .starting) {
+                    let scriptContent = "open -gj -a Docker > /dev/null 2>&1"  // start docker
+                    self.runProcess(scriptContent: scriptContent, terminationHandler: { process in
+                        if (process.terminationStatus == 0) {
+                            DispatchQueue.main.async { self.dockerState = .starting }
+                            return
+                        }
+                        self.dockerState = .error
+                    })
+                }
+            })
         })
     }
     func updateGitInstallStatus() {
@@ -358,6 +402,31 @@ class KoinosDataModel: ObservableObject {
                 let topology = result["topology"] as? [String: String] ?? [String:String]()
                 callback(Int(topology["height"] ?? "") ?? 0, nil)
             }
+        }
+    }
+    func getChainId(callback: @escaping (String?, Error?) -> Void) {
+        KoinosDataModel.koinosCall(host: "http://localhost:8080", method: "chain.get_chain_id", params: nil) { (reply: Data?, error: Error?) in
+            if (error != nil) { callback(nil, error) }
+            else {
+                let dictionary = KoinosDataModel.dictionaryFromJSON(json: reply!)
+                let result = dictionary["result"] as? [String: String] ?? [String:String]()
+                let chainId = result["chain_id"] ?? ""
+                callback(chainId, nil)
+            }
+        }
+    }
+    func updateChainFatalErrorStatus() {
+        getChainId() { (id: String?, error: Error?) in
+            struct Holder { static var timesCalled = 0 }
+            let rpcRunning = self.nodeBlockHeight > 0
+            let chainRunning = id != ""
+            if chainRunning || !self.nodeRunning {
+                Holder.timesCalled = 0
+            }
+            if rpcRunning && !chainRunning {
+                Holder.timesCalled += 1
+            }
+            self.chainFatalError = Holder.timesCalled > 5
         }
     }
 

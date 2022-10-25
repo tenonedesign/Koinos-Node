@@ -18,7 +18,7 @@ struct ContentView: View {
     @State private var showAlert = false
     
     var body: some View {
-        if dm.configurationIsValid && dm.dockerIsRunning && dm.gitIsInstalled {
+        if dm.configurationIsValid && dm.dockerState == .started && dm.gitIsInstalled {
             VStack {
                 Text("Koinos Node")
                     .font(.largeTitle).foregroundColor(Color.accentColor)
@@ -48,6 +48,32 @@ struct ContentView: View {
                           Button(action: {showAlert = true}) {
                               Text("Full data reset...").frame(minWidth: 160)
                           }.disabled(dm.genericRunning || dm.nodeRunning)
+                          Menu("Logs") {
+                              Button(action: {dm.openLog(path: "p2p/logs/p2p.log")} ) {
+                                  Text("P2P").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "chain/logs/000.log")} ) {
+                                  Text("Chain").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "block_store/logs/block_store.log")} ) {
+                                  Text("Block Store").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "block_producer/logs/000.log")} ) {
+                                  Text("Block Producer").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "jsonrpc/logs/jsonrpc.log")} ) {
+                                  Text("JSON RPC").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "transaction_store/logs/transaction_store.log")} ) {
+                                  Text("Transaction Store").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "mempool/logs/000.log")} ) {
+                                  Text("Mempool").frame(minWidth: 160)
+                              }
+                              Button(action: {dm.openLog(path: "contract_meta_store/logs/contract_meta_store.log")} ) {
+                                  Text("Contract Meta Store").frame(minWidth: 160)
+                              }
+                          }
                           Menu("Backup / restore") {
                               Button(action: {dm.saveBackup()}) {
                                   Text("Save backup...").frame(minWidth: 160)
@@ -66,8 +92,13 @@ struct ContentView: View {
                     dm.alertToast
                 }
                 .toast(isPresenting: $dm.showProgressToast) {
-                    AlertToast(displayMode: .banner(.pop), type: .loading, title: "\(dm.progressText) (\(Int(floor(dm.progress.fractionCompleted * 100)))%)", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
+                    AlertToast(displayMode: .banner(.pop), type: .loading, title: "\(dm.progressText)\((dm.progress != nil) ? " (\(Int(floor((dm.progress?.fractionCompleted ?? 0) * 100)))%)" : "" )", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
                 }
+
+                .toast(isPresenting: $dm.chainFatalError, duration: 0){
+                    AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Chain not responding. Restart node or restore from backup.", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
+                }
+            
                 // too aggressive - shows on startup
                 // could show only when node is running, but can’t combine dm.nodeRequiresReload with dm.nodeRunning here
 //                .toast(isPresenting: $dm.nodeRequiresReload, duration: 0){
@@ -94,15 +125,15 @@ struct ContentView: View {
                     KoinosDataModel.getBlockHeights(host: dm.externalApiEndpoint) { (height: Int?, error: Error?) in
                         dm.networkBlockHeight = height ?? 0
                     }
-                    
                     dataModel.getBalance(contractId: "1JZqj7dDrK5LzvdJgufYBJNUFo88xBoWC8", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
                         dm.producerVHP = balance ?? 0
                     }
                     dataModel.getBalance(contractId: "19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
                         dm.producerKoin = balance ?? 0
                     }
-                    dataModel.updateDockerRunStatus()
+                    dataModel.updateDockerState()
                     dataModel.updateGitInstallStatus()
+                    dataModel.updateChainFatalErrorStatus()
                 })
         }
         else if !dm.configurationIsValid {
@@ -115,20 +146,35 @@ struct ContentView: View {
                     }.padding([.top, .bottom], 16)
             }.padding()
         }
-        else if !dm.dockerIsRunning {
+        else if dm.dockerState != .started {
             VStack {
-                Text("Docker Desktop not detected").multilineTextAlignment(.center).font(.largeTitle).padding(.top, 16)
-                Text("This app requires Docker Desktop to be installed and running").multilineTextAlignment(.center).font(.headline).padding(.top, 1)
-                Text("").fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center).padding(.top, 1)
-                Button(action: {
-                    if let url = URL(string: "https://www.docker.com/products/docker-desktop/") {
-                        NSWorkspace.shared.open(url)
-                    } }) {
-                        Text("Download Docker Desktop")
-                    }.padding([.top, .bottom], 16)
+                if (dm.dockerState == .notInstalled) {
+                    Text("Docker Desktop not detected").multilineTextAlignment(.center).font(.largeTitle).padding(.top, 16)
+                    Text("This app requires Docker Desktop to be installed and running").multilineTextAlignment(.center).font(.headline).padding(.top, 1)
+                    Text("").fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center).padding(.top, 1)
+                    Button(action: {
+                        if let url = URL(string: "https://www.docker.com/products/docker-desktop/") {
+                            NSWorkspace.shared.open(url)
+                        } }) {
+                            Text("Download Docker Desktop")
+                        }.padding([.top, .bottom], 16)
+                }
+                if (dm.dockerState == .starting || dm.dockerState == .unknown) {
+                    Text("Docker is starting...").multilineTextAlignment(.center).font(.largeTitle).padding(.top, 16)
+                    Text("Hang tight while Docker starts up").multilineTextAlignment(.center).font(.headline).padding(.top, 1)
+                    Text("").fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center).padding(.top, 1)
+                }
+                if (dm.dockerState == .error) {
+                    Text("Error running docker").multilineTextAlignment(.center).font(.largeTitle).padding(.top, 16)
+                    Text("Docker was shut down manually or has otherwise stopped").multilineTextAlignment(.center).font(.headline).padding(.top, 1)
+                    Text("").fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center).padding(.top, 1)
+                    Button(action: { dm.dockerState = .unknown }) {
+                            Text("Try running docker again")
+                        }.padding([.top, .bottom], 16)
+                }
             }.padding()
                 .onReceive(timer, perform: { time in
-                    dataModel.updateDockerRunStatus()
+                    dataModel.updateDockerState()
                 })
         }
         else {
