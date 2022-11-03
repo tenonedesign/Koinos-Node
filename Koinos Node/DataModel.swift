@@ -12,6 +12,7 @@ import secp256k1
 import BigInt
 import Base58Swift
 import ZIPFoundation
+import SwiftProtobuf
 
 enum DockerStates {
     case unknown
@@ -227,18 +228,19 @@ class KoinosDataModel: ObservableObject {
     func saveBackup() {
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy";
+        formatter.dateFormat = "yyyy-MM-dd";
         let dateString = formatter.string(from: Date())
         let panel = NSSavePanel()
         panel.nameFieldLabel = "Save backup as:"
-        panel.nameFieldStringValue = "Koinos-backup-\(dateString).zip"
+//        panel.nameFieldStringValue = "Koinos-backup-\(dateString).zip"
+        panel.nameFieldStringValue = "\(dateString).koinosbackup"
         panel.canCreateDirectories = true
         panel.begin { response in
           if response == NSApplication.ModalResponse.OK, let fileUrl = panel.url {
 //              print(fileUrl)
               panel.orderOut(nil)
-              self.showProgressToast = true
-              self.shouldShowProgress(true, text: "Creating backup")
+//              self.shouldShowProgress(true, text: "Creating backup")
+              self.shouldShowProgress(true, text: "Creating backup", showPercent: false)
               DispatchQueue.global(qos: .background).async {
                   self.saveBackupToUrl(url: fileUrl)
               }
@@ -246,35 +248,29 @@ class KoinosDataModel: ObservableObject {
         }
     }
     func saveBackupToUrl(url: URL) {
-        // this method may be faster, but no progress indicator: https://recoursive.com/2021/02/25/create_zip_archive_using_only_foundation/
-        let fm = FileManager.default
-        let koinosDataUrl = URL(fileURLWithPath: "\(self.containerDirectory).koinos")
         
-        // remove private key
-        do {
-            try fm.removeItem(atPath: "\(self.containerDirectory).koinos/block_producer/private.key")
-        } catch let error {
-            print("error deleting public key: \(error)")
-        }
-
+        let fm = FileManager.default
         _ = try? fm.removeItem(at: url)
-        do {
-            try fm.zipItem(at: koinosDataUrl, to: url, progress: progress)
-        }
-        catch let error {
-            print("error writing zip to file: \(error)")
+        let scriptContent = """
+            cp -R '\(containerDirectory).koinos' '\(url.path)';
+            rm '\(url.path)/block_producer/private.key';
+            rm '\(url.path)/block_producer/public.key';
+            rm -r '\(url.path)/block_producer/logs';
+            rm -r '\(url.path)/block_store/logs';
+            rm -r '\(url.path)/chain/logs';
+            rm -r '\(url.path)/contract_meta_store/logs';
+            rm -r '\(url.path)/jsonrpc/logs';
+            rm -r '\(url.path)/mempool/logs';
+            rm -r '\(url.path)/p2p/logs';
+            rm -r '\(url.path)/transaction_store/logs';
+        """
+//        print(scriptContent)
+        runProcess(scriptContent: scriptContent, terminationHandler: { process in
             DispatchQueue.main.async {
                 self.shouldShowProgress(false)
-                self.showFailureAlert(text: "Backup failed")
-                self.reloadKoinos(alert: false) // put private key back
+                self.showSuccessAlert(text: "Backup complete")
             }
-            return
-        }
-        DispatchQueue.main.async {
-            self.shouldShowProgress(false)
-            self.showSuccessAlert(text: "Backup complete")
-            self.reloadKoinos(alert: false) // put private key back
-        }
+        })
     }
     func restoreFromBackup() {
         let panel = NSOpenPanel()
@@ -282,28 +278,20 @@ class KoinosDataModel: ObservableObject {
         panel.canCreateDirectories = true
         panel.begin { response in
           if response == NSApplication.ModalResponse.OK, let fileUrl = panel.url {
-              print(fileUrl)
               panel.orderOut(nil)
-              self.shouldShowProgress(true, text: "Restoring from backup")
+              self.shouldShowProgress(true, text: "Restoring from backup", showPercent: false)
               DispatchQueue.global(qos: .background).async {
-                  do {
-                      let fm = FileManager.default
-                      _ = try? fm.removeItem(at: URL(fileURLWithPath: "\(self.containerDirectory).koinos"))
-                      try fm.unzipItem(at: fileUrl, to: URL(fileURLWithPath: self.containerDirectory), progress: self.progress)
-                  }
-                  catch let error {
-                      print("error reading from zip file: \(error)")
+                  let fm = FileManager.default
+                  _ = try? fm.removeItem(at: URL(fileURLWithPath: "\(self.containerDirectory).koinos"))
+                  let scriptContent = "cp -R '\(fileUrl.path)' '\(self.containerDirectory)'.koinos;"
+//                  print(scriptContent)
+                  self.runProcess(scriptContent: scriptContent, terminationHandler: { process in
                       DispatchQueue.main.async {
                           self.shouldShowProgress(false)
-                          self.showFailureAlert(text: "Restore failed")
+                          self.showSuccessAlert(text: "Restore complete")
+                          self.nodeRequiresReload = true
                       }
-                      return
-                  }
-                  DispatchQueue.main.async {
-                      self.shouldShowProgress(false)
-                      self.showSuccessAlert(text: "Restore complete")
-                      self.reloadKoinos(alert: false) // put private key back
-                  }
+                  })
               }
           }
         }
@@ -319,8 +307,8 @@ class KoinosDataModel: ObservableObject {
             }
         }
     }
+    
     func updatePublicKey() {
-        
         if !validatePrivateKey(minerPrivateKey) { minerPublicKey = ""; return }
         let privateKeyBytesWithPrefix = Base58.base58CheckDecode(minerPrivateKey) ?? []
         let privateKeyBytes = privateKeyBytesWithPrefix.dropFirst(1)
@@ -349,8 +337,8 @@ class KoinosDataModel: ObservableObject {
         minerPublicKey = compressedPublicKey.base64urlEncodedString()
 //        print("public key: \(minerPublicKey)")
     }
+    
     func generateKeyPair() {
-        
         var privateKey = generatePrivateKey(bitWidth: 256)
         privateKey = [128] + privateKey // 0x80 is the chain id (mainnet)
 //        print("private key: \(privateKey)")
@@ -472,10 +460,9 @@ class KoinosDataModel: ObservableObject {
             else {
                 let dictionary = KoinosDataModel.dictionaryFromJSON(json: reply!)
                 let result = dictionary["result"] as? [String: String] ?? [String:String]()
-                let balanceBase64 = result["result"] ?? ""
-                let balanceData = Data(base64urlEncoded: balanceBase64) ?? Data()
-                if balanceData.isEmpty { callback(nil, "invalid response"); return }
-                callback(Int(self.decodeVarint(varint: balanceData)), nil)
+                var balanceBase64 = result["result"] ?? ""
+                let b = try? Koinos_Contracts_Token_balance_object(serializedData: Data(base64urlEncoded: balanceBase64) ?? Data())
+                callback(Int(b?.value ?? 0), nil)
             }
         }
     }

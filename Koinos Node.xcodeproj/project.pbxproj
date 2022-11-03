@@ -10,6 +10,10 @@
 		D0046D2828F9B3A100DCDFFC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0046D2728F9B3A100DCDFFC /* Utils.swift */; };
 		D0046D2B28F9B51F00DCDFFC /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D0046D2A28F9B51F00DCDFFC /* ZIPFoundation */; };
 		D0046D2D28FA06D300DCDFFC /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D0046D2C28FA06D300DCDFFC /* README.md */; };
+		D01F9D472911C58A009A7FAE /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = D01F9D462911C58A009A7FAE /* SwiftProtobuf */; };
+		D01F9D492911C58A009A7FAE /* SwiftProtobufPluginLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = D01F9D482911C58A009A7FAE /* SwiftProtobufPluginLibrary */; };
+		D01F9D4B2911C58A009A7FAE /* protoc-gen-swift in Frameworks */ = {isa = PBXBuildFile; productRef = D01F9D4A2911C58A009A7FAE /* protoc-gen-swift */; };
+		D091FA432911D4B2007371FD /* koinos-reload.sh in Resources */ = {isa = PBXBuildFile; fileRef = D091FA422911D4B2007371FD /* koinos-reload.sh */; };
 		D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */; };
 		D0A602DE28F4752C00A92564 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602DD28F4752C00A92564 /* ContentView.swift */; };
 		D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602E228F4752D00A92564 /* Preview Assets.xcassets */; };
@@ -19,16 +23,48 @@
 		D0A602F828F5CA4300A92564 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A602F728F5CA4300A92564 /* Settings.swift */; };
 		D0A602FB28F5DBF700A92564 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = D0A602FA28F5DBF700A92564 /* AlertToast */; };
 		D0A602FC28F608C800A92564 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A602DF28F4752D00A92564 /* Assets.xcassets */; };
+		D0CB76722911DBC000AABAB4 /* contract_meta_store.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB763D2911DBC000AABAB4 /* contract_meta_store.pb.swift */; };
+		D0CB76732911DBC000AABAB4 /* common.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB763E2911DBC000AABAB4 /* common.pb.swift */; };
+		D0CB76742911DBC000AABAB4 /* transaction_store.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76402911DBC000AABAB4 /* transaction_store.pb.swift */; };
+		D0CB76752911DBC000AABAB4 /* koin.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76432911DBC000AABAB4 /* koin.pb.swift */; };
+		D0CB76762911DBC000AABAB4 /* token.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76452911DBC000AABAB4 /* token.pb.swift */; };
+		D0CB76772911DBC000AABAB4 /* pob.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76472911DBC000AABAB4 /* pob.pb.swift */; };
+		D0CB76782911DBC000AABAB4 /* pow.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76492911DBC000AABAB4 /* pow.pb.swift */; };
+		D0CB76792911DBC000AABAB4 /* name_service.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB764B2911DBC000AABAB4 /* name_service.pb.swift */; };
+		D0CB767A2911DBC000AABAB4 /* resources.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB764D2911DBC000AABAB4 /* resources.pb.swift */; };
+		D0CB767B2911DBC000AABAB4 /* governance.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB764F2911DBC000AABAB4 /* governance.pb.swift */; };
+		D0CB767C2911DBC000AABAB4 /* vhp.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76512911DBC000AABAB4 /* vhp.pb.swift */; };
+		D0CB767D2911DBC000AABAB4 /* claim.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76532911DBC000AABAB4 /* claim.pb.swift */; };
+		D0CB767E2911DBC000AABAB4 /* authority.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76552911DBC000AABAB4 /* authority.pb.swift */; };
+		D0CB767F2911DBC000AABAB4 /* system_calls.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76562911DBC000AABAB4 /* system_calls.pb.swift */; };
+		D0CB76802911DBC000AABAB4 /* object_spaces.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76572911DBC000AABAB4 /* object_spaces.pb.swift */; };
+		D0CB76812911DBC000AABAB4 /* chain.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76582911DBC000AABAB4 /* chain.pb.swift */; };
+		D0CB76822911DBC000AABAB4 /* system_call_ids.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76592911DBC000AABAB4 /* system_call_ids.pb.swift */; };
+		D0CB76832911DBC000AABAB4 /* value.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB765A2911DBC000AABAB4 /* value.pb.swift */; };
+		D0CB76842911DBC000AABAB4 /* error.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB765B2911DBC000AABAB4 /* error.pb.swift */; };
+		D0CB76852911DBC000AABAB4 /* events.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB765C2911DBC000AABAB4 /* events.pb.swift */; };
+		D0CB76862911DBC000AABAB4 /* protocol.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB765E2911DBC000AABAB4 /* protocol.pb.swift */; };
+		D0CB76872911DBC000AABAB4 /* options.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB765F2911DBC000AABAB4 /* options.pb.swift */; };
+		D0CB76882911DBC000AABAB4 /* block_store.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76612911DBC000AABAB4 /* block_store.pb.swift */; };
+		D0CB76892911DBC000AABAB4 /* rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76632911DBC000AABAB4 /* rpc.pb.swift */; };
+		D0CB768A2911DBC000AABAB4 /* contract_meta_store_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76652911DBC000AABAB4 /* contract_meta_store_rpc.pb.swift */; };
+		D0CB768B2911DBC000AABAB4 /* transaction_store_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76672911DBC000AABAB4 /* transaction_store_rpc.pb.swift */; };
+		D0CB768C2911DBC000AABAB4 /* chain_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76692911DBC000AABAB4 /* chain_rpc.pb.swift */; };
+		D0CB768D2911DBC000AABAB4 /* block_store_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB766B2911DBC000AABAB4 /* block_store_rpc.pb.swift */; };
+		D0CB768E2911DBC000AABAB4 /* p2p_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB766D2911DBC000AABAB4 /* p2p_rpc.pb.swift */; };
+		D0CB768F2911DBC000AABAB4 /* mempool_rpc.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB766F2911DBC000AABAB4 /* mempool_rpc.pb.swift */; };
+		D0CB76902911DBC000AABAB4 /* broadcast.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB76712911DBC000AABAB4 /* broadcast.pb.swift */; };
 		D0D63E0028F720B6003515FC /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63DFF28F720B6003515FC /* secp256k1 */; };
 		D0D63E0328F72184003515FC /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63E0228F72184003515FC /* BigInt */; };
 		D0D63E0628F7226B003515FC /* Base58Swift in Frameworks */ = {isa = PBXBuildFile; productRef = D0D63E0528F7226B003515FC /* Base58Swift */; };
-		D0DEA41C28F637F100F17568 /* koinos-reload.sh in Resources */ = {isa = PBXBuildFile; fileRef = D0DEA41B28F637F100F17568 /* koinos-reload.sh */; };
 		D0DEA41F28F668FD00F17568 /* Zip in Frameworks */ = {isa = PBXBuildFile; productRef = D0DEA41E28F668FD00F17568 /* Zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D0046D2728F9B3A100DCDFFC /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D0046D2C28FA06D300DCDFFC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D025DDAF290A0681007ED681 /* Koinos-Node-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Koinos-Node-Info.plist"; sourceTree = SOURCE_ROOT; };
+		D091FA422911D4B2007371FD /* koinos-reload.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "koinos-reload.sh"; sourceTree = "<group>"; };
 		D0A602D828F4752C00A92564 /* Koinos Node.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Koinos Node.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koinos_NodeApp.swift; sourceTree = "<group>"; };
 		D0A602DD28F4752C00A92564 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -39,7 +75,37 @@
 		D0A602F328F4F4AB00A92564 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0A602F528F4F69100A92564 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		D0A602F728F5CA4300A92564 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		D0DEA41B28F637F100F17568 /* koinos-reload.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "koinos-reload.sh"; sourceTree = "<group>"; };
+		D0CB763D2911DBC000AABAB4 /* contract_meta_store.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contract_meta_store.pb.swift; sourceTree = "<group>"; };
+		D0CB763E2911DBC000AABAB4 /* common.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.pb.swift; sourceTree = "<group>"; };
+		D0CB76402911DBC000AABAB4 /* transaction_store.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = transaction_store.pb.swift; sourceTree = "<group>"; };
+		D0CB76432911DBC000AABAB4 /* koin.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = koin.pb.swift; sourceTree = "<group>"; };
+		D0CB76452911DBC000AABAB4 /* token.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = token.pb.swift; sourceTree = "<group>"; };
+		D0CB76472911DBC000AABAB4 /* pob.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pob.pb.swift; sourceTree = "<group>"; };
+		D0CB76492911DBC000AABAB4 /* pow.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pow.pb.swift; sourceTree = "<group>"; };
+		D0CB764B2911DBC000AABAB4 /* name_service.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = name_service.pb.swift; sourceTree = "<group>"; };
+		D0CB764D2911DBC000AABAB4 /* resources.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = resources.pb.swift; sourceTree = "<group>"; };
+		D0CB764F2911DBC000AABAB4 /* governance.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = governance.pb.swift; sourceTree = "<group>"; };
+		D0CB76512911DBC000AABAB4 /* vhp.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = vhp.pb.swift; sourceTree = "<group>"; };
+		D0CB76532911DBC000AABAB4 /* claim.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = claim.pb.swift; sourceTree = "<group>"; };
+		D0CB76552911DBC000AABAB4 /* authority.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = authority.pb.swift; sourceTree = "<group>"; };
+		D0CB76562911DBC000AABAB4 /* system_calls.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = system_calls.pb.swift; sourceTree = "<group>"; };
+		D0CB76572911DBC000AABAB4 /* object_spaces.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = object_spaces.pb.swift; sourceTree = "<group>"; };
+		D0CB76582911DBC000AABAB4 /* chain.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = chain.pb.swift; sourceTree = "<group>"; };
+		D0CB76592911DBC000AABAB4 /* system_call_ids.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = system_call_ids.pb.swift; sourceTree = "<group>"; };
+		D0CB765A2911DBC000AABAB4 /* value.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = value.pb.swift; sourceTree = "<group>"; };
+		D0CB765B2911DBC000AABAB4 /* error.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = error.pb.swift; sourceTree = "<group>"; };
+		D0CB765C2911DBC000AABAB4 /* events.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = events.pb.swift; sourceTree = "<group>"; };
+		D0CB765E2911DBC000AABAB4 /* protocol.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = protocol.pb.swift; sourceTree = "<group>"; };
+		D0CB765F2911DBC000AABAB4 /* options.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = options.pb.swift; sourceTree = "<group>"; };
+		D0CB76612911DBC000AABAB4 /* block_store.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = block_store.pb.swift; sourceTree = "<group>"; };
+		D0CB76632911DBC000AABAB4 /* rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB76652911DBC000AABAB4 /* contract_meta_store_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = contract_meta_store_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB76672911DBC000AABAB4 /* transaction_store_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = transaction_store_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB76692911DBC000AABAB4 /* chain_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = chain_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB766B2911DBC000AABAB4 /* block_store_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = block_store_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB766D2911DBC000AABAB4 /* p2p_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = p2p_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB766F2911DBC000AABAB4 /* mempool_rpc.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mempool_rpc.pb.swift; sourceTree = "<group>"; };
+		D0CB76712911DBC000AABAB4 /* broadcast.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = broadcast.pb.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +117,10 @@
 				D0D63E0628F7226B003515FC /* Base58Swift in Frameworks */,
 				D0D63E0028F720B6003515FC /* secp256k1 in Frameworks */,
 				D0A602FB28F5DBF700A92564 /* AlertToast in Frameworks */,
+				D01F9D492911C58A009A7FAE /* SwiftProtobufPluginLibrary in Frameworks */,
+				D01F9D4B2911C58A009A7FAE /* protoc-gen-swift in Frameworks */,
 				D0D63E0328F72184003515FC /* BigInt in Frameworks */,
+				D01F9D472911C58A009A7FAE /* SwiftProtobuf in Frameworks */,
 				D0046D2B28F9B51F00DCDFFC /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,8 +148,10 @@
 		D0A602DA28F4752C00A92564 /* Koinos Node */ = {
 			isa = PBXGroup;
 			children = (
+				D025DDAF290A0681007ED681 /* Koinos-Node-Info.plist */,
 				D0A602EF28F4758600A92564 /* koinos-reset.sh */,
-				D0DEA41B28F637F100F17568 /* koinos-reload.sh */,
+				D091FA422911D4B2007371FD /* koinos-reload.sh */,
+				D0CB763B2911DBC000AABAB4 /* koinos */,
 				D0A602DB28F4752C00A92564 /* Koinos_NodeApp.swift */,
 				D0A602F328F4F4AB00A92564 /* AppDelegate.swift */,
 				D0A602F528F4F69100A92564 /* DataModel.swift */,
@@ -100,6 +171,228 @@
 				D0A602E228F4752D00A92564 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		D0CB763B2911DBC000AABAB4 /* koinos */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB763C2911DBC000AABAB4 /* contract_meta_store */,
+				D0CB763E2911DBC000AABAB4 /* common.pb.swift */,
+				D0CB763F2911DBC000AABAB4 /* transaction_store */,
+				D0CB76412911DBC000AABAB4 /* contracts */,
+				D0CB76542911DBC000AABAB4 /* chain */,
+				D0CB765D2911DBC000AABAB4 /* protocol */,
+				D0CB765F2911DBC000AABAB4 /* options.pb.swift */,
+				D0CB76602911DBC000AABAB4 /* block_store */,
+				D0CB76622911DBC000AABAB4 /* rpc */,
+				D0CB76702911DBC000AABAB4 /* broadcast */,
+			);
+			path = koinos;
+			sourceTree = "<group>";
+		};
+		D0CB763C2911DBC000AABAB4 /* contract_meta_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB763D2911DBC000AABAB4 /* contract_meta_store.pb.swift */,
+			);
+			path = contract_meta_store;
+			sourceTree = "<group>";
+		};
+		D0CB763F2911DBC000AABAB4 /* transaction_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76402911DBC000AABAB4 /* transaction_store.pb.swift */,
+			);
+			path = transaction_store;
+			sourceTree = "<group>";
+		};
+		D0CB76412911DBC000AABAB4 /* contracts */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76422911DBC000AABAB4 /* koin */,
+				D0CB76442911DBC000AABAB4 /* token */,
+				D0CB76462911DBC000AABAB4 /* pob */,
+				D0CB76482911DBC000AABAB4 /* pow */,
+				D0CB764A2911DBC000AABAB4 /* name_service */,
+				D0CB764C2911DBC000AABAB4 /* resources */,
+				D0CB764E2911DBC000AABAB4 /* governance */,
+				D0CB76502911DBC000AABAB4 /* vhp */,
+				D0CB76522911DBC000AABAB4 /* claim */,
+			);
+			path = contracts;
+			sourceTree = "<group>";
+		};
+		D0CB76422911DBC000AABAB4 /* koin */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76432911DBC000AABAB4 /* koin.pb.swift */,
+			);
+			path = koin;
+			sourceTree = "<group>";
+		};
+		D0CB76442911DBC000AABAB4 /* token */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76452911DBC000AABAB4 /* token.pb.swift */,
+			);
+			path = token;
+			sourceTree = "<group>";
+		};
+		D0CB76462911DBC000AABAB4 /* pob */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76472911DBC000AABAB4 /* pob.pb.swift */,
+			);
+			path = pob;
+			sourceTree = "<group>";
+		};
+		D0CB76482911DBC000AABAB4 /* pow */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76492911DBC000AABAB4 /* pow.pb.swift */,
+			);
+			path = pow;
+			sourceTree = "<group>";
+		};
+		D0CB764A2911DBC000AABAB4 /* name_service */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB764B2911DBC000AABAB4 /* name_service.pb.swift */,
+			);
+			path = name_service;
+			sourceTree = "<group>";
+		};
+		D0CB764C2911DBC000AABAB4 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB764D2911DBC000AABAB4 /* resources.pb.swift */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		D0CB764E2911DBC000AABAB4 /* governance */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB764F2911DBC000AABAB4 /* governance.pb.swift */,
+			);
+			path = governance;
+			sourceTree = "<group>";
+		};
+		D0CB76502911DBC000AABAB4 /* vhp */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76512911DBC000AABAB4 /* vhp.pb.swift */,
+			);
+			path = vhp;
+			sourceTree = "<group>";
+		};
+		D0CB76522911DBC000AABAB4 /* claim */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76532911DBC000AABAB4 /* claim.pb.swift */,
+			);
+			path = claim;
+			sourceTree = "<group>";
+		};
+		D0CB76542911DBC000AABAB4 /* chain */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76552911DBC000AABAB4 /* authority.pb.swift */,
+				D0CB76562911DBC000AABAB4 /* system_calls.pb.swift */,
+				D0CB76572911DBC000AABAB4 /* object_spaces.pb.swift */,
+				D0CB76582911DBC000AABAB4 /* chain.pb.swift */,
+				D0CB76592911DBC000AABAB4 /* system_call_ids.pb.swift */,
+				D0CB765A2911DBC000AABAB4 /* value.pb.swift */,
+				D0CB765B2911DBC000AABAB4 /* error.pb.swift */,
+				D0CB765C2911DBC000AABAB4 /* events.pb.swift */,
+			);
+			path = chain;
+			sourceTree = "<group>";
+		};
+		D0CB765D2911DBC000AABAB4 /* protocol */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB765E2911DBC000AABAB4 /* protocol.pb.swift */,
+			);
+			path = protocol;
+			sourceTree = "<group>";
+		};
+		D0CB76602911DBC000AABAB4 /* block_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76612911DBC000AABAB4 /* block_store.pb.swift */,
+			);
+			path = block_store;
+			sourceTree = "<group>";
+		};
+		D0CB76622911DBC000AABAB4 /* rpc */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76632911DBC000AABAB4 /* rpc.pb.swift */,
+				D0CB76642911DBC000AABAB4 /* contract_meta_store */,
+				D0CB76662911DBC000AABAB4 /* transaction_store */,
+				D0CB76682911DBC000AABAB4 /* chain */,
+				D0CB766A2911DBC000AABAB4 /* block_store */,
+				D0CB766C2911DBC000AABAB4 /* p2p */,
+				D0CB766E2911DBC000AABAB4 /* mempool */,
+			);
+			path = rpc;
+			sourceTree = "<group>";
+		};
+		D0CB76642911DBC000AABAB4 /* contract_meta_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76652911DBC000AABAB4 /* contract_meta_store_rpc.pb.swift */,
+			);
+			path = contract_meta_store;
+			sourceTree = "<group>";
+		};
+		D0CB76662911DBC000AABAB4 /* transaction_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76672911DBC000AABAB4 /* transaction_store_rpc.pb.swift */,
+			);
+			path = transaction_store;
+			sourceTree = "<group>";
+		};
+		D0CB76682911DBC000AABAB4 /* chain */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76692911DBC000AABAB4 /* chain_rpc.pb.swift */,
+			);
+			path = chain;
+			sourceTree = "<group>";
+		};
+		D0CB766A2911DBC000AABAB4 /* block_store */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB766B2911DBC000AABAB4 /* block_store_rpc.pb.swift */,
+			);
+			path = block_store;
+			sourceTree = "<group>";
+		};
+		D0CB766C2911DBC000AABAB4 /* p2p */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB766D2911DBC000AABAB4 /* p2p_rpc.pb.swift */,
+			);
+			path = p2p;
+			sourceTree = "<group>";
+		};
+		D0CB766E2911DBC000AABAB4 /* mempool */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB766F2911DBC000AABAB4 /* mempool_rpc.pb.swift */,
+			);
+			path = mempool;
+			sourceTree = "<group>";
+		};
+		D0CB76702911DBC000AABAB4 /* broadcast */ = {
+			isa = PBXGroup;
+			children = (
+				D0CB76712911DBC000AABAB4 /* broadcast.pb.swift */,
+			);
+			path = broadcast;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +418,9 @@
 				D0D63E0228F72184003515FC /* BigInt */,
 				D0D63E0528F7226B003515FC /* Base58Swift */,
 				D0046D2A28F9B51F00DCDFFC /* ZIPFoundation */,
+				D01F9D462911C58A009A7FAE /* SwiftProtobuf */,
+				D01F9D482911C58A009A7FAE /* SwiftProtobufPluginLibrary */,
+				D01F9D4A2911C58A009A7FAE /* protoc-gen-swift */,
 			);
 			productName = "Koinos Node";
 			productReference = D0A602D828F4752C00A92564 /* Koinos Node.app */;
@@ -161,6 +457,7 @@
 				D0D63E0128F72184003515FC /* XCRemoteSwiftPackageReference "BigInt" */,
 				D0D63E0428F7226B003515FC /* XCRemoteSwiftPackageReference "Base58Swift" */,
 				D0046D2928F9B51F00DCDFFC /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				D01F9D452911C58A009A7FAE /* XCRemoteSwiftPackageReference "swift-protobuf" */,
 			);
 			productRefGroup = D0A602D928F4752C00A92564 /* Products */;
 			projectDirPath = "";
@@ -178,9 +475,9 @@
 			files = (
 				D0A602E328F4752D00A92564 /* Preview Assets.xcassets in Resources */,
 				D0A602FC28F608C800A92564 /* Assets.xcassets in Resources */,
+				D091FA432911D4B2007371FD /* koinos-reload.sh in Resources */,
 				D0046D2D28FA06D300DCDFFC /* README.md in Resources */,
 				D0A602F028F4758600A92564 /* koinos-reset.sh in Resources */,
-				D0DEA41C28F637F100F17568 /* koinos-reload.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,11 +489,42 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0A602DE28F4752C00A92564 /* ContentView.swift in Sources */,
+				D0CB767F2911DBC000AABAB4 /* system_calls.pb.swift in Sources */,
+				D0CB768B2911DBC000AABAB4 /* transaction_store_rpc.pb.swift in Sources */,
+				D0CB768C2911DBC000AABAB4 /* chain_rpc.pb.swift in Sources */,
+				D0CB768F2911DBC000AABAB4 /* mempool_rpc.pb.swift in Sources */,
+				D0CB767E2911DBC000AABAB4 /* authority.pb.swift in Sources */,
+				D0CB76762911DBC000AABAB4 /* token.pb.swift in Sources */,
+				D0CB76752911DBC000AABAB4 /* koin.pb.swift in Sources */,
+				D0CB76882911DBC000AABAB4 /* block_store.pb.swift in Sources */,
+				D0CB768E2911DBC000AABAB4 /* p2p_rpc.pb.swift in Sources */,
+				D0CB76802911DBC000AABAB4 /* object_spaces.pb.swift in Sources */,
+				D0CB76792911DBC000AABAB4 /* name_service.pb.swift in Sources */,
+				D0CB76832911DBC000AABAB4 /* value.pb.swift in Sources */,
+				D0CB76902911DBC000AABAB4 /* broadcast.pb.swift in Sources */,
 				D0A602F428F4F4AB00A92564 /* AppDelegate.swift in Sources */,
+				D0CB768D2911DBC000AABAB4 /* block_store_rpc.pb.swift in Sources */,
+				D0CB76782911DBC000AABAB4 /* pow.pb.swift in Sources */,
+				D0CB76852911DBC000AABAB4 /* events.pb.swift in Sources */,
 				D0A602F828F5CA4300A92564 /* Settings.swift in Sources */,
+				D0CB76872911DBC000AABAB4 /* options.pb.swift in Sources */,
+				D0CB767A2911DBC000AABAB4 /* resources.pb.swift in Sources */,
+				D0CB76812911DBC000AABAB4 /* chain.pb.swift in Sources */,
+				D0CB76772911DBC000AABAB4 /* pob.pb.swift in Sources */,
 				D0A602DC28F4752C00A92564 /* Koinos_NodeApp.swift in Sources */,
+				D0CB767D2911DBC000AABAB4 /* claim.pb.swift in Sources */,
+				D0CB76842911DBC000AABAB4 /* error.pb.swift in Sources */,
+				D0CB767B2911DBC000AABAB4 /* governance.pb.swift in Sources */,
+				D0CB76732911DBC000AABAB4 /* common.pb.swift in Sources */,
+				D0CB76822911DBC000AABAB4 /* system_call_ids.pb.swift in Sources */,
+				D0CB76862911DBC000AABAB4 /* protocol.pb.swift in Sources */,
+				D0CB767C2911DBC000AABAB4 /* vhp.pb.swift in Sources */,
+				D0CB76892911DBC000AABAB4 /* rpc.pb.swift in Sources */,
 				D0A602F628F4F69100A92564 /* DataModel.swift in Sources */,
 				D0046D2828F9B3A100DCDFFC /* Utils.swift in Sources */,
+				D0CB76722911DBC000AABAB4 /* contract_meta_store.pb.swift in Sources */,
+				D0CB768A2911DBC000AABAB4 /* contract_meta_store_rpc.pb.swift in Sources */,
+				D0CB76742911DBC000AABAB4 /* transaction_store.pb.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,12 +653,14 @@
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Koinos Node/Preview Content\"";
 				DEVELOPMENT_TEAM = 8FEZZEFZ96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "koinos-swift-proto";
+				INFOPLIST_FILE = "Koinos-Node-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -354,12 +684,14 @@
 				CODE_SIGN_ENTITLEMENTS = "Koinos Node/Koinos_Node.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Koinos Node/Preview Content\"";
 				DEVELOPMENT_TEAM = 8FEZZEFZ96;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "koinos-swift-proto";
+				INFOPLIST_FILE = "Koinos-Node-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -404,6 +736,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.9.9;
+			};
+		};
+		D01F9D452911C58A009A7FAE /* XCRemoteSwiftPackageReference "swift-protobuf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-protobuf.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		D0A602F928F5DBF700A92564 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
@@ -453,6 +793,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D0046D2928F9B51F00DCDFFC /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		D01F9D462911C58A009A7FAE /* SwiftProtobuf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D01F9D452911C58A009A7FAE /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			productName = SwiftProtobuf;
+		};
+		D01F9D482911C58A009A7FAE /* SwiftProtobufPluginLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D01F9D452911C58A009A7FAE /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			productName = SwiftProtobufPluginLibrary;
+		};
+		D01F9D4A2911C58A009A7FAE /* protoc-gen-swift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D01F9D452911C58A009A7FAE /* XCRemoteSwiftPackageReference "swift-protobuf" */;
+			productName = "protoc-gen-swift";
 		};
 		D0A602FA28F5DBF700A92564 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -17,3 +17,15 @@ It’s easy to mine Koin using your node.  You’ll need to have an existing Koi
     - `pob.register_public_key <your-wallet-address> <public-key-from-Koinos-Node-preferences>`
     
 Start the node, and you’re done.
+
+
+
+### A note about protocol buffers
+
+This project uses Swift language protobuf interface code compiled from [Koinos Proto](https://github.com/koinos/koinos-proto).  Here are the steps used to create the code.
+ - Install the [Swift Protobuf](https://github.com/apple/swift-protobuf) plugin from the repository or using `brew install swift-protobuf`
+ - `git clone https://github.com/koinos/koinos-proto.git`
+ - `cd koinos-proto`
+ - `mkdir -p build/swift` 
+ - ``protoc --experimental_allow_proto3_optional  --swift_out=build/swift/ `find koinos -name '*.proto'` ``
+ - Drag/drop the generated koinos folder from koinos-proto/build/swift to the Xcode project, making sure to select "Create groups" for the added folders. 

@@ -96,7 +96,7 @@ struct ContentView: View {
                 }
 
                 .toast(isPresenting: $dm.chainFatalError, duration: 0){
-                    AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Chain not responding. Restart node or restore from backup.", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
+                    AlertToast(displayMode: .banner(.pop), type: .error(.orange), title: "Chain not reponding. Will retry.", subTitle: nil, style: AlertToast.AlertStyle.style(backgroundColor: Color("AlertBackground")))
                 }
             
                 // too aggressive - shows on startup
