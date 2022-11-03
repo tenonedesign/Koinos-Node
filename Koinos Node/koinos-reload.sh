@@ -31,6 +31,10 @@ echo $KOINOS_MINER_PRIVATE_KEY > "$KOINOS_DATA_DIRECTORY/block_producer/private.
 sed -i.bak "s/# producer:/producer: $KOINOS_PRODUCER_ADDRESS/g" "$KOINOS_DIRECTORY/koinos/config/default-config.yml"
 rm "$KOINOS_DIRECTORY/koinos/config/default-config.yml.bak"
 
+# update entire producer line in existing config.yml in case this is someone else’s config.yml
+sed -i.bak "s/  producer:.*/  producer: $KOINOS_PRODUCER_ADDRESS/" "$KOINOS_DIRECTORY/.koinos/config.yml"
+rm "$KOINOS_DIRECTORY/.koinos/config.yml.bak"
+
 sed -i.bak "s|BASEDIR=~/.koinos|BASEDIR=$KOINOS_DATA_DIRECTORY|g" "$KOINOS_DIRECTORY/koinos/.env"
 rm "$KOINOS_DIRECTORY/koinos/.env.bak"
 
