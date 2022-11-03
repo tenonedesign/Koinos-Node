@@ -27,31 +27,37 @@ mkdir "$KOINOS_DATA_DIRECTORY"
 mkdir "$KOINOS_DATA_DIRECTORY/block_producer"
 echo $KOINOS_MINER_PRIVATE_KEY > "$KOINOS_DATA_DIRECTORY/block_producer/private.key"
 
-sed -i.'' "s/# producer:/producer: $KOINOS_PRODUCER_ADDRESS/g" "$KOINOS_DIRECTORY/koinos/config/default-config.yml"
+# if the sed .bak strategy seems strange, it to accommodate both macOS and linux sed (https://stackoverflow.com/a/22084103)
+sed -i.bak "s/# producer:/producer: $KOINOS_PRODUCER_ADDRESS/g" "$KOINOS_DIRECTORY/koinos/config/default-config.yml"
+rm "$KOINOS_DIRECTORY/koinos/config/default-config.yml.bak"
 
-sed -i '' "s|BASEDIR=~/.koinos|BASEDIR=$KOINOS_DATA_DIRECTORY|g" "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak "s|BASEDIR=~/.koinos|BASEDIR=$KOINOS_DATA_DIRECTORY|g" "$KOINOS_DIRECTORY/koinos/.env"
+rm "$KOINOS_DIRECTORY/koinos/.env.bak"
 
 
 # Can use this strategy for between-release updates on particular images
 # This one updates the v0.4.0 release to use newer images
-sed -i '' 's/MEMPOOL_TAG=v0.4.0/MEMPOOL_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/CHAIN_TAG=v0.4.0/CHAIN_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/BLOCK_STORE_TAG=v0.4.0/BLOCK_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/P2P_TAG=v0.4.0/P2P_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/BLOCK_PRODUCER_TAG=v0.4.0/BLOCK_PRODUCER_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/TRANSACTION_STORE_TAG=v0.4.0/TRANSACTION_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/CONTRACT_META_STORE_TAG=v0.4.0/CONTRACT_META_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/JSONRPC_TAG=v0.4.0/JSONRPC_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/MEMPOOL_TAG=v0.4.0/MEMPOOL_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/CHAIN_TAG=v0.4.0/CHAIN_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/BLOCK_STORE_TAG=v0.4.0/BLOCK_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/P2P_TAG=v0.4.0/P2P_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/BLOCK_PRODUCER_TAG=v0.4.0/BLOCK_PRODUCER_TAG=v0.4.1/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/TRANSACTION_STORE_TAG=v0.4.0/TRANSACTION_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/CONTRACT_META_STORE_TAG=v0.4.0/CONTRACT_META_STORE_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/JSONRPC_TAG=v0.4.0/JSONRPC_TAG=v0.4.2/g' "$KOINOS_DIRECTORY/koinos/.env"
 
 # This one updates the v04.1 release to use newer images
-sed -i '' 's/MEMPOOL_TAG=v0.4.1//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/CHAIN_TAG=v0.4.2/CHAIN_TAG=v0.4.3/g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/BLOCK_STORE_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/P2P_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/BLOCK_PRODUCER_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/TRANSACTION_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/CONTRACT_META_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
-sed -i '' 's/JSONRPC_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/MEMPOOL_TAG=v0.4.1//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/MEMPOOL_TAG=v0.4.1//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/CHAIN_TAG=v0.4.2/CHAIN_TAG=v0.4.3/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/BLOCK_STORE_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/P2P_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/BLOCK_PRODUCER_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/TRANSACTION_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/CONTRACT_META_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/JSONRPC_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
+
+rm "$KOINOS_DIRECTORY/koinos/.env.bak"
 
 # Support for Apple Silicon
 cd "$KOINOS_DIRECTORY/koinos/config"
