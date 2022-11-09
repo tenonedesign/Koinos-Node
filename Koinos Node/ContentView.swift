@@ -45,10 +45,10 @@ struct ContentView: View {
                           Button(action: { dm.openPreferences() }) {
                               Text("Open preferences...")
                           }
-                          Button(action: {showAlert = true}) {
-                              Text("Full data reset...").frame(minWidth: 160)
-                          }.disabled(dm.genericRunning || dm.nodeRunning)
                           Menu("Logs") {
+                              Button(action: { _ = NSAppleScript(source: "tell application \"Terminal\" do script \"echo foo\" end tell")} ) {
+                                  Text("Combined").frame(minWidth: 160)
+                              }
                               Button(action: {dm.openLog(path: "p2p/logs/p2p.log")} ) {
                                   Text("P2P").frame(minWidth: 160)
                               }
@@ -80,6 +80,11 @@ struct ContentView: View {
                               }.disabled(dm.genericRunning || dm.nodeRunning)
                               Button(action: {dm.restoreFromBackup()}) {
                                   Text("Restore from backup...").frame(minWidth: 160)
+                              }.disabled(dm.genericRunning || dm.nodeRunning)
+                          }
+                          Menu("More") {
+                              Button(action: {showAlert = true}) {
+                                  Text("Full blockchain reset...").frame(minWidth: 160)
                               }.disabled(dm.genericRunning || dm.nodeRunning)
                           }
                         } label: {
@@ -125,10 +130,10 @@ struct ContentView: View {
                     KoinosDataModel.getBlockHeights(host: dm.externalApiEndpoint) { (height: Int?, error: Error?) in
                         dm.networkBlockHeight = height ?? 0
                     }
-                    dataModel.getBalance(contractId: "1JZqj7dDrK5LzvdJgufYBJNUFo88xBoWC8", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
+                    dataModel.getBalance(contractId: "1AdzuXSpC6K9qtXdCBgD5NUpDNwHjMgrc9", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
                         dm.producerVHP = balance ?? 0
                     }
-                    dataModel.getBalance(contractId: "19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
+                    dataModel.getBalance(contractId: "15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL", entryPoint: 1550980247, address: dm.producerAddress) { (balance: Int?, error: Error?) in
                         dm.producerKoin = balance ?? 0
                     }
                     dataModel.updateDockerState()

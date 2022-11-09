@@ -13,7 +13,7 @@ It’s easy to mine Koin using your node.  You’ll need to have an existing Koi
  - Open the Koinos CLI wallet and enter the following commands
     - `connect https://api.koinosblocks.com/`
     - `open "/Users/your-username/your-koinos-wallet" your-wallet-password`
-    - `register pob 198RuEouhgiiaQm7uGfaXS6jqZr6g6nyoR` (this contract address may change for mainnet)
+    - `register pob 159myq5YUhhoVWu3wsHKHiJYKPKGUrGiyv`
     - `pob.register_public_key <your-wallet-address> <public-key-from-Koinos-Node-preferences>`
     
 Start the node, and you’re done.

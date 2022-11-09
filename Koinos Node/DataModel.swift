@@ -24,7 +24,7 @@ enum DockerStates {
 
 class KoinosDataModel: ObservableObject {
     
-    @AppStorage("version") var version = "latest" { didSet { nodeRequiresReload = true } }
+    @AppStorage("version") var version = "1.0.0" { didSet { nodeRequiresReload = true } }
     @AppStorage("minerPrivateKey") var minerPrivateKey = "" { didSet{ nodeRequiresReload = true; updatePublicKey() } }
     @AppStorage("minerPublicKey") var minerPublicKey = "" { didSet { nodeRequiresReload = true } }
     @AppStorage("producerAddress") var producerAddress = "" { didSet { nodeRequiresReload = true } }
