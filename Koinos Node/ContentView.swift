@@ -46,9 +46,9 @@ struct ContentView: View {
                               Text("Open preferences...")
                           }
                           Menu("Logs") {
-                              Button(action: { _ = NSAppleScript(source: "tell application \"Terminal\" do script \"echo foo\" end tell")} ) {
-                                  Text("Combined").frame(minWidth: 160)
-                              }
+//                              Button(action: { dm.openLog(path: "p2p/logs/p2p.log"); _ = NSAppleScript(source: "tell application \"Terminal\" do script \"echo foo\" end tell")} ) {
+//                                  Text("Combined").frame(minWidth: 160)
+//                              }
                               Button(action: {dm.openLog(path: "p2p/logs/p2p.log")} ) {
                                   Text("P2P").frame(minWidth: 160)
                               }

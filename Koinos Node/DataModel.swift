@@ -79,7 +79,7 @@ class KoinosDataModel: ObservableObject {
         return (address.count == 34)
     }
     func validatePrivateKey(_ key: String) -> Bool {
-        return (key.count == 51)
+        return (key.count == 51 || key.count == 52)
     }
     var configurationIsValid: Bool {
         validateAddress(producerAddress) && validatePrivateKey(minerPrivateKey)
@@ -311,7 +311,11 @@ class KoinosDataModel: ObservableObject {
     func updatePublicKey() {
         if !validatePrivateKey(minerPrivateKey) { minerPublicKey = ""; return }
         let privateKeyBytesWithPrefix = Base58.base58CheckDecode(minerPrivateKey) ?? []
-        let privateKeyBytes = privateKeyBytesWithPrefix.dropFirst(1)
+        var privateKeyBytes = privateKeyBytesWithPrefix.dropFirst(1)
+        // drop compressed key indicating byte if present
+        if (privateKeyBytes.count == 33) {
+            privateKeyBytes = privateKeyBytes.dropLast(1)
+        }
         
         guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN)) else { return }
         // https://github.com/greymass/swift-eosio/blob/master/Sources/EOSIO/Secp256k1.swift
@@ -340,8 +344,9 @@ class KoinosDataModel: ObservableObject {
     
     func generateKeyPair() {
         var privateKey = generatePrivateKey(bitWidth: 256)
-        privateKey = [128] + privateKey // 0x80 is the chain id (mainnet)
-//        print("private key: \(privateKey)")
+        privateKey = [128] + privateKey + [1] // 0x80 is the chain id (mainnet)
+        
+//        print("private key: \(privateKey.toHexString)")
 //        print("private key: \(Base58.base58Encode([UInt8](privateKey)))")
 //        print("private key: \(Base58.base58CheckEncode([UInt8](privateKey)))")
         minerPrivateKey = Base58.base58CheckEncode([UInt8](privateKey))
