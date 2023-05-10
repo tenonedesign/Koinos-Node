@@ -52,8 +52,9 @@ sed -i.bak 's/TRANSACTION_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
 sed -i.bak 's/CONTRACT_META_STORE_TAG=v0.4.3//g' "$KOINOS_DIRECTORY/koinos/.env"
 sed -i.bak 's/JSONRPC_TAG=v0.4.2//g' "$KOINOS_DIRECTORY/koinos/.env"
 
-# hotfix for chain vuln
-sed -i.bak 's/CHAIN_TAG=v1.0.3/CHAIN_TAG=latest-p1/g' "$KOINOS_DIRECTORY/koinos/.env"
+# updates .env from .env.example as included in this version https://discord.com/channels/613823471679438898/1049410780900118538/1105594301272043531
+sed -i.bak 's/CHAIN_TAG=v1.0.3/CHAIN_TAG=v1.0.3a/g' "$KOINOS_DIRECTORY/koinos/.env"
+sed -i.bak 's/BLOCK_PRODUCER_TAG=v1.0.2/BLOCK_PRODUCER_TAG=v1.1.0/g' "$KOINOS_DIRECTORY/koinos/.env"
 
 rm "$KOINOS_DIRECTORY/koinos/.env.bak"
 
