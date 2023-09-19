@@ -35,6 +35,12 @@ echo $KOINOS_MINER_PRIVATE_KEY > "$KOINOS_DATA_DIRECTORY/block_producer/private.
 sed -i.bak "s/# producer:/producer: $KOINOS_PRODUCER_ADDRESS/g" "$KOINOS_DIRECTORY/koinos/config/config.yml"
 rm "$KOINOS_DIRECTORY/koinos/config/config.yml.bak"
 
+sed -i.bak "s/# checkpoint:/checkpoint:/g" "$KOINOS_DIRECTORY/koinos/config/config.yml"
+rm "$KOINOS_DIRECTORY/koinos/config/config.yml.bak"
+
+sed -i.bak "s/#  - BLOCK_HEIGHT:BLOCK_ID/  - 8901567:1220021040ad93fe01d6c73671468fb05efb8cb45b55e48be80d119e202d7997f69d/g" "$KOINOS_DIRECTORY/koinos/config/config.yml"
+rm "$KOINOS_DIRECTORY/koinos/config/config.yml.bak"
+
 sed -i.bak "s|BASEDIR=~/.koinos|BASEDIR=$KOINOS_DATA_DIRECTORY|g" "$KOINOS_DIRECTORY/koinos/.env"
 rm "$KOINOS_DIRECTORY/koinos/.env.bak"
 

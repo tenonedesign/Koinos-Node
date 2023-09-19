@@ -1,0 +1,68 @@
+{
+  "pins" : [
+    {
+      "identity" : "alerttoast",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/elai950/AlertToast.git",
+      "state" : {
+        "revision" : "a4f4267f6454259ba4ed8f9dadb87334a789c26c",
+        "version" : "1.3.7"
+      }
+    },
+    {
+      "identity" : "base58swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keefertaylor/Base58Swift.git",
+      "state" : {
+        "revision" : "1c13ea6b07f1584660526f8bde3d4cc150e91acd",
+        "version" : "2.1.14"
+      }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "0ed110f7555c34ff468e72e1686e59721f2b0da6",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "secp256k1.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Boilertalk/secp256k1.swift.git",
+      "state" : {
+        "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
+        "version" : "0.1.7"
+      }
+    },
+    {
+      "identity" : "swift-protobuf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-protobuf.git",
+      "state" : {
+        "revision" : "88c7d15e1242fdb6ecbafbc7926426a19be1e98a",
+        "version" : "1.20.2"
+      }
+    },
+    {
+      "identity" : "zip",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/marmelroy/Zip.git",
+      "state" : {
+        "revision" : "67fa55813b9e7b3b9acee9c0ae501def28746d76",
+        "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "f6a22e7da26314b38bf9befce34ae8e4b2543090",
+        "version" : "0.9.15"
+      }
+    }
+  ],
+  "version" : 2
+}
